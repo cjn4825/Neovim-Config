@@ -26,7 +26,6 @@ else
     DOTFILES="$HOME/.dotfiles"
 fi
 
-
 # creates ~/.config if not already there
 if [ ! -d "$HOME/.config" ]; then
     CHANGED=true
@@ -67,17 +66,23 @@ dotlink "tmux/.tmux.conf" ".tmux.conf"
 dotlink "bin/devup" ".local/bin/devup"
 dotlink "bin/devssh" ".local/bin/devssh"
 
-USERPATH="
-#--- sets user path to .local/bin
-export PATH=\"\$PATH:\$HOME/.local/bin\"
-#--- end of setting user path
+TOOLPATH="
+#--- sets user path to .local/bin and adds mise shims
+export PATH=\"\$HOME/.local/share/mise/shims:\$HOME/.local/bin:\$PATH\"
+#--- end of setting tool path
 "
 
 # if user path isn't added already
 if ! grep -q "sets user path to" "$HOME/.bashrc"; then
+
+    # adds warning if path is already modified in .bashrc
+    if ! grep -q "PATH" "$HOME/.bashrc"; then
+        echo "[WARNING] PATH is modified in .bashrc confirm this doesn't effect bootstrapping"
+    fi
+
     CHANGED=true
     echo "Adding user path to .bashrc..."
-    echo "$USERPATH" >> "$HOME/.bashrc"
+    echo "$TOOLPATH" >> "$HOME/.bashrc"
 fi
 
 # download mise if not already on the system with arch detection
@@ -90,22 +95,25 @@ if [ ! -f "$MISEBIN" ]; then
     esac
 
     curl -Lo "$MISEBIN" "https://mise.jdx.dev/mise-latest-linux-$MISE_ARCH"
+    chmod +x "$MISEBIN"
 fi
 
-MISEPATH="
-#--- sets mise tool shims to be in path
-export PATH=\"\$PATH:\$HOME/.local/share/mise/shims\"
-#--- end of mise shims config
-"
+#MISEPATH="
+##--- sets mise tool shims to be in path
+#export PATH=\"\$HOME/.local/share/mise/shims:\$PATH\"
+##--- end of mise shims config
+#"
 
 # adjust path if inside a container
-if [ "$CONTAINER" = true ]; then
-    if ! grep -q "mise tool shims" "$HOME/.bashrc"; then
-        CHANGED=true
-        echo "Adding mise tools to PATH"
-        echo "$MISEPATH" >> "$HOME/.bashrc"
-    fi
-fi
+# commented out for now as i'm thinking of not using contianers
+# and just always use mise for in and out
+# if [ "$CONTAINER" = true ]; then
+    # if ! grep -q "mise tool shims" "$HOME/.bashrc"; then
+    #     CHANGED=true
+    #     echo "Adding mise tools to PATH"
+    #     echo "$MISEPATH" >> "$HOME/.bashrc"
+    # fi
+# fi
 
 checkmise() {
     local name=$1
