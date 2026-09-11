@@ -29,14 +29,8 @@ This includes cosmetic changes I've made to the command prompt line, which inclu
 ## tmux
 This includes config files needed for tmux, the multiplexer I use, so that I can have multiple terminals and windows open, and contains the logic of how it interacts with Neovim for seamless switching.
 
-# Skills Gained
-
-By building and using this environment for more than a year now, I've gained and improved skills in:
-
-* Linux Proficiency: daily terminal workflow, Package management, file permissions, system navigation, symbolic links, file systems, user permissions, and management.
-* Shell Proficiency: Bash usage, shell scripting, tmux multiplexer.
-* Programming aid: Language Server Protocols with languages such as C, Go, Python, Bash, and Lua.
-* Configuration Management: Modular Lua configuration, plugin management with Lazy, and maintaining dotfiles to my liking.
+# Troubleshooting
+If you can't use tools provided by mise try sources your bashrc
 
 # Example of Environment
 

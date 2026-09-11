@@ -121,11 +121,12 @@ return {
 
             local tools = require("core.tools")
 
-			require("mason-lspconfig").setup()
+			require("mason-lspconfig").setup({
+                ensure_installed = tools.lsp_to_install
+            })
 
 			require("mason-tool-installer").setup({
 				ensure_installed = tools.all_tools,
-                run_on_start = false,
                 auto_update = false
 
 			})
